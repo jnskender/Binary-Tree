@@ -14,7 +14,7 @@ class Binary_Tree
         end
     end
 
-    def add(node, parent = @root) #Recursive,
+    def add(node, parent = @root) # Recursive,
         return @root = node if @root.nil?
         if node.value < parent.value
             if parent.left.nil?
@@ -35,59 +35,54 @@ class Binary_Tree
 
     def breadth_first_search(search)
         queue = [@root]
-        found = false
-        until found
-            if queue[0].value == search
-                found = true
-                return puts "Node Found! -> #{queue[0].to_s}"
-            else
-                queue << queue[0].left unless queue[0].left.nil?
-                queue << queue[0].right unless queue[0].right.nil?
-                queue.shift
-                return puts "Node not Found!" if queue.empty?
-            end
+        until queue.empty?
+            i = queue.shift
+            return puts "Node Found -> #{i}" if i.value == search
+                queue << i.left unless i.left.nil?
+                queue << i.right unless i.right.nil?
         end
+        return puts 'Node not Found!'
     end
 
     def depth_first_search(search)
-      #Check root for search
-      #Go left and check for search.
-      stack = []
-      #check left side
-      i = @root
-      until i.nil?
-        if i.value == search
-          return puts "Node Found! #{i.to_s}"
-        else
-          stack << i.left
-          i = i.left
+        stack = []
+        # check left side
+        i = @root
+        until i.nil?
+            return puts "Node Found! #{i}" if i.value == search
+            stack << i.left
+            i = i.left
         end
-      end
 
-      loop do
-        break if stack.empty?
-          match = stack.shift
-          puts "Found Node! #{match}" if match == search
-      end
-
-      #check right side
-      i = @root
-      until i.nil?
-        if i.value == search
-          return puts "Node Found! #{i.to_s}"
-        else
-          stack << i.right
-          i = i.right
+        until stack.empty?
+            match = stack.shift
+            return puts "Found Node! #{match}" if match == search
         end
-      end
 
-      loop do
-        break if stack.empty?
-          match = stack.shift
-          puts "Found Node! #{match}" if match == search
-      end
+        # check right side
+        i = @root.right
+        until i.nil?
+            return puts "Node Found! #{i}" if i.value == search
+            stack << i.right
+            i = i.right
+        end
 
-      return puts "Node not found!"
+        until stack.empty?
+            match = stack.shift
+            return puts "Found Node! #{match}" if match == search
+        end
+
+        puts 'Node not found!'
+    end
+
+    def dfs(search) # Trying to refactor but this is still basically breadth_first_search
+        stack = [@root]
+        until stack.empty?
+            i = stack.pop
+            return puts i.to_s if search == i.value
+            stack << i.left unless i.left.nil?
+            stack << i.right unless i.right.nil?
+        end
     end
 
     def print_tree
@@ -97,14 +92,14 @@ class Binary_Tree
             break if queue.empty?
             queue << queue[0].left unless queue[0].left.nil?
             queue << queue[0].right unless queue[0].right.nil?
-            print "#{queue.shift.value}"
+            print queue.shift.value.to_s
         end
         puts ''
     end
 end
-array = [3, 2, 4, 1, 5]
+array = [10, 9, 25, 8, 17, 6, 75, 2, 1, 35, 52, 40]
 tree = Binary_Tree.new(array)
 tree.print_tree
-array.each {|v| tree.breadth_first_search(v)}
-array.each {|v| tree.depth_first_search(v)}
-tree.depth_first_search(12)
+array.each { |v| tree.breadth_first_search(v) }
+array.each { |v| tree.depth_first_search(v) }
+array.each { |v| tree.dfs(v) }
