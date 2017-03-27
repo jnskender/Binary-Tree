@@ -49,29 +49,28 @@ class Binary_Tree
         # check left side
         i = @root
         until i.nil?
-            return puts "Node Found! #{i}" if i.value == search
+            return puts "Node Found on Left! #{i}" if i.value == search
             stack << i.left
             i = i.left
         end
 
         until stack.empty?
-            match = stack.shift
-            return puts "Found Node! #{match}" if match == search
+            i = stack.pop
+            return puts "Found Node on Left! #{i}" if i == search
         end
 
         # check right side
         i = @root.right
-        until i.nil?
-            return puts "Node Found! #{i}" if i.value == search
+        until i.nil? # check all right sub nodes and add their right child to stack
+            return puts "Node Found on Right! #{i}" if i.value == search
             stack << i.right
             i = i.right
         end
 
-        until stack.empty?
-            match = stack.shift
-            return puts "Found Node! #{match}" if match == search
+        until stack.empty? # check all nodes placed in stack which will be all left children on right side
+            i = stack.pop
+            return puts "Found Node on Right! #{i}" if i == search
         end
-
         puts 'Node not found!'
     end
 
