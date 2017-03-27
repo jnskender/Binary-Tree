@@ -33,55 +33,27 @@ class Binary_Tree
         end
     end # end build_tree
 
-    def breadth_first_search(search)
+    def breadth_first_search(target)
         queue = [@root]
         until queue.empty?
             i = queue.shift
-            return puts "Node Found -> #{i}" if i.value == search
+            return puts "Node Found -> #{i}" if i.value == target
                 queue << i.left unless i.left.nil?
                 queue << i.right unless i.right.nil?
         end
         return puts 'Node not Found!'
     end
 
-    def depth_first_search(search)
-        stack = []
-        # check left side
-        i = @root
-        until i.nil?
-            return puts "Node Found on Left! #{i}" if i.value == search
-            stack << i.left
-            i = i.left
-        end
 
-        until stack.empty?
-            i = stack.pop
-            return puts "Found Node on Left! #{i}" if i == search
-        end
-
-        # check right side
-        i = @root.right
-        until i.nil? # check all right sub nodes and add their right child to stack
-            return puts "Node Found on Right! #{i}" if i.value == search
-            stack << i.right
-            i = i.right
-        end
-
-        until stack.empty? # check all nodes placed in stack which will be all left children on right side
-            i = stack.pop
-            return puts "Found Node on Right! #{i}" if i == search
-        end
-        puts 'Node not found!'
-    end
-
-    def dfs(search) # Trying to refactor but this is still basically breadth_first_search
+    def depth_first_search(target)
         stack = [@root]
         until stack.empty?
-            i = stack.pop
-            return puts i.to_s if search == i.value
+            i = stack.pop #index of current node
+            return puts "Node Found ->#{i.to_s}" if target == i.value
             stack << i.left unless i.left.nil?
             stack << i.right unless i.right.nil?
         end
+        puts "Node not Found"
     end
 
     def print_tree
